@@ -1,31 +1,13 @@
-import { useState } from "react";
-import NewPost from "./NewPost";
+import { useState, useEffect } from "react";
 import Post from "./post";
 import classes from "./PostsList.module.css";
-import { Modal } from "./Modal";
+import { useLoaderData } from "react-router-dom";
 
-export function PostsList({ onPosting, onStopPosting }) {
-  const [posts, setPosts] = useState([]);
-
-  function addPostHandler(post) {
-    setPosts((prevPosts) => {
-      return [post, ...prevPosts];
-    });
-  }
-  function onPostHandler(post) {
-    const postData = {
-      ...post,
-      id: Math.random().toString(),
-    };
-    addPostHandler(postData);
-  }
+export function PostsList() {
+  const posts = useLoaderData();
+   
   return (
     <div>
-      {onPosting && (
-        <Modal onClose={onStopPosting}>
-          <NewPost onCancel={onStopPosting} onAddPost={onPostHandler} />
-        </Modal>
-      )}
 
       {posts.length > 0 && (
         <ul className={classes.posts}>
@@ -38,6 +20,7 @@ export function PostsList({ onPosting, onStopPosting }) {
       {posts.length === 0 && (
         <div>There are no posts please consider adding some.....</div>
       )}
+
     </div>
   );
 }
